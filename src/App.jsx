@@ -24,13 +24,18 @@ const Input = styled.input`
   padding: 0.8rem 1.2rem;
 `;
 
+const StyledApp = styled.main`
+  background-color: orangered;
+  padding: 20px;
+`;
+
 export default function App() {
   return (
-    <div>
+    <StyledApp>
       <H1>The Wild Oasis</H1>
       <Button onClick={() => console.log("Check in")}>Check in</Button>
       <Button onClick={() => console.log("Check out")}>Check out</Button>
       <Input type="number" placeholder="Number of guests" />
-    </div>
+    </StyledApp>
   );
 }
