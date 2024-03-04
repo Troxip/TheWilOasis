@@ -2,6 +2,9 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import { useSettings } from "./useSettings";
+import Spinner from "./../../ui/Spinner";
+import { useUpdateSetting } from "./useUpdateSetting";
+import { updateSetting } from "../../services/apiSettings";
 
 function UpdateSettingsForm() {
   const {
@@ -13,15 +16,33 @@ function UpdateSettingsForm() {
       breakfastPrice,
     } = {},
   } = useSettings();
+  const { isUpdating, updateSetting } = useUpdateSetting();
+
+  if (isLoading) return <Spinner />;
+
+  function handleUpdate(e, field) {
+    const { value } = e.target;
+
+    if (!value) return;
+    updateSetting({ [field]: value });
+  }
 
   return (
     <Form>
       <FormRow label="Minimum nights/booking">
-        <Input type="number" id="min-nights" defaultValue={minBookingLength} />
+        <Input
+          type="number"
+          id="min-nights"
+          disabled={isUpdating}
+          defaultValue={minBookingLength}
+          onBlur={(e) => handleUpdate(e, "minBookingLength")}
+        />
       </FormRow>
+
       <FormRow label="Maximum nights/booking">
         <Input type="number" id="max-nights" defaultValue={maxBookingLength} />
       </FormRow>
+
       <FormRow label="Maximum guests/booking">
         <Input
           type="number"
@@ -29,6 +50,7 @@ function UpdateSettingsForm() {
           defaultValue={maxGuestsPerBooking}
         />
       </FormRow>
+
       <FormRow label="Breakfast price">
         <Input
           type="number"
